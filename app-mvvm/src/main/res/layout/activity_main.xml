@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <data>
+        <variable
+            name="viewModel"
+            type="com.pfh.app_mvvm.viewmodel.MainViewModel"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.pfh.app_mvvm.view.MainActivity">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+        <RelativeLayout
+            android:id="@+id/layout_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"
+            android:animateLayoutChanges="true"
+            android:background="?attr/colorPrimary"
+            android:paddingBottom="20dp"
+            android:paddingLeft="@dimen/vertical_margin"
+            android:paddingRight="@dimen/vertical_margin"
+            android:paddingTop="10dp">
+
+            <ImageButton
+                android:id="@+id/button_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/ic_search_white_36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:onClick="@{viewModel.onClickSearch}"
+                app:visibility="@{viewModel.searchButtonVisibility}"
+                tools:visibility="visible"/><!--tools的技巧-->
+
+            <EditText
+                android:id="@+id/edit_text_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/button_search"
+                android:hint="@string/enter_your_name"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:theme="@style/LightEditText"
+                android:textColor="@color/white"
+                android:onEditorAction="@{viewModel.onSearchAction}"
+                app:addTextChangedListener="@{viewModel.usernameEditTextWatcher}"
+                />
+            <!--android:text="@={viewModel.editTextUsernameValue}" 双向绑定-->
+            <!--android:onTextChanged="@{viewModel.onTextChanged}"-->
+        </RelativeLayout>
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout_search"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            app:visibility="@{viewModel.progressVisibility}"/>
+
+        <TextView
+            android:id="@+id/text_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout_search"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/vertical_margin"
+            android:layout_marginRight="@dimen/vertical_margin"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:textColor="@color/secondary_text"
+            android:textSize="18sp"
+            android:text="@{viewModel.infoMessage}"
+            app:visibility="@{viewModel.infoMessageVisibility}"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/repos_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/layout_search"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/vertical_margin_half"
+            android:paddingTop="@dimen/vertical_margin_half"
+            android:scrollbars="vertical"
+            app:visibility="@{viewModel.recyclerViewVisibility}"
+            tools:listitem="@layout/item_repo"/><!--tools技巧-->
+
+    </RelativeLayout>
+
+</layout>
