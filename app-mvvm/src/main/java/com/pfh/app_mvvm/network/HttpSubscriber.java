@@ -13,21 +13,33 @@ import rx.Subscriber;
  */
 
 public abstract class HttpSubscriber<T> extends Subscriber<HttpResult<T>> {
+
+    private boolean isShowProgressDialog = true;//是否显示加载框,默认显示
+
+
+    public void setShowProgressDialog(boolean isShow){
+        isShowProgressDialog = isShow;
+    }
+
     @Override
     public void onCompleted() {
         onFinished();
-        dismissProgress();
+        if (isShowProgressDialog){
+            dismissProgress();
+        }
     }
 
     @Override
     public void onError(Throwable e) {
         Log.e("TAG",e.toString());
-        if (e instanceof ExceptionHandle.ResponeThrowable){//如果是Exception
-            onFailure(ExceptionHandle.handleException(e));
+        if (e instanceof ExceptionHandler.ResponeThrowable){//如果是Exception
+            onFailure(ExceptionHandler.handleException(e));
         }else {
-            onFailure(new ExceptionHandle.ResponeThrowable(e,ExceptionHandle.ERROR.UNKNOWN));
+            onFailure(new ExceptionHandler.ResponeThrowable(e, ExceptionHandler.ERROR.UNKNOWN));
         }
-        dismissProgress();
+        if (isShowProgressDialog){
+            dismissProgress();
+        }
     }
 
     @Override
@@ -35,7 +47,7 @@ public abstract class HttpSubscriber<T> extends Subscriber<HttpResult<T>> {
         if (result.isSuccess()){
             onSuccess(result.getData());
         }else {
-            onFailure(new ExceptionHandle.ResponeThrowable(result.getMsg(),result.getCode()));
+            onFailure(new ExceptionHandler.ResponeThrowable(result.getMsg(),result.getCode()));
         }
     }
 
@@ -47,7 +59,9 @@ public abstract class HttpSubscriber<T> extends Subscriber<HttpResult<T>> {
             onCompleted();
             return;
         }
-        showProgress();//显示Dialog在onStart里不太合适吧，它会在Subscriber的subscribeOn线程执行，应该用doOnSubscribe() todo
+        if (isShowProgressDialog){
+            showProgress();//显示Dialog在onStart里不太合适吧，它会在Subscriber的subscribeOn线程执行，应该用doOnSubscribe() todo
+        }
     }
 
 
@@ -61,7 +75,7 @@ public abstract class HttpSubscriber<T> extends Subscriber<HttpResult<T>> {
 
     public abstract void onSuccess(T t);
 
-    public abstract void onFailure(ExceptionHandle.ResponeThrowable responeThrowable);
+    public abstract void onFailure(ExceptionHandler.ResponeThrowable responeThrowable);
 
     public abstract void onFinished();
 

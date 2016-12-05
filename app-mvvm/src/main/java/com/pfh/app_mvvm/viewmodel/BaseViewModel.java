@@ -10,17 +10,14 @@ import rx.Subscription;
 
 public class BaseViewModel implements IViewModel{
 
-    protected Context context;
+    protected Context mContext;
     protected Subscription subscription;
 
 
-    /**
-     *
-     */
     @Override
     public void destory() {
         if (subscription != null && !subscription.isUnsubscribed()) subscription.unsubscribe();
         subscription = null;
-        context = null;
+        mContext = null;
     }
 }

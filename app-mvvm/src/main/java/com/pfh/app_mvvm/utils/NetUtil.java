@@ -28,10 +28,8 @@ public class NetUtil {
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         if (null != connectivityManager) {
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-            if (networkInfo != null && networkInfo.isConnected()) {
-                if (networkInfo.getState() == NetworkInfo.State.CONNECTING) {
-                    return true;
-                }
+            if (networkInfo != null){
+                return networkInfo.isAvailable();
             }
         }
         return false;

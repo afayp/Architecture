@@ -31,48 +31,50 @@ import rx.schedulers.Schedulers;
  * Created by Administrator on 2016/12/3.
  */
 
-public class HttpClient {
+public class RetrofitClient {
 
     private static final String BASE_URL = "https://api.github.com/";
     private static final int DEFAULT_TIMEOUT = 10;
     private static final int  maxCacheSize = 5; // MB
 
-
-    private ApiService apiService;
+    protected ApiService apiService;
     private static Retrofit retrofit;
     private static OkHttpClient okHttpClient;
-    private static Context mContext; // 防止内存泄露，用了application的context，不知道合不合适？
+    private static Context mContext; // 防止内存泄露，用了application的context，不知道合不合适？ 还是使用WeakReference？
 
-    Observable.Transformer schedulersTransformer() {
-        return new Observable.Transformer() {
-            @Override
-            public Object call(Object observable) {
-                return ((Observable)  observable).subscribeOn(Schedulers.io())
-                        .unsubscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
-            }
-        };
-    }
+    protected Observable.Transformer defaultSchedulers = new Observable.Transformer() {
+        @Override
+        public Object call(Object observable) {
+            return ((Observable) observable).subscribeOn(Schedulers.io())
+                    .unsubscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread());
+        }
+    };
+//    Observable.Transformer schedulersTransformer() {
+//        return new Observable.Transformer() {
+//            @Override
+//            public Object call(Object observable) {
+//                return ((Observable)  observable).subscribeOn(Schedulers.io())
+//                        .unsubscribeOn(Schedulers.io())
+//                        .observeOn(AndroidSchedulers.mainThread());
+//            }
+//        };
+//    }
 
-    private HttpClient(){
-        this.mContext = MyApplication.getInstance();
-        initOkHttpClient();
-        initRetrofit();
-    }
-
-    private static class SingletonHolder{
-        private static HttpClient INSTANCE = new HttpClient();
-    }
-
-    public static HttpClient getInstance(){
-        return SingletonHolder.INSTANCE;
-    }
-
-    public ApiService getGithubService(){
+    public ApiService getApiService(){
         if (apiService == null){
             apiService = retrofit.create(ApiService.class);
         }
         return apiService;
+    }
+
+    protected void init(){
+        this.mContext = MyApplication.getInstance();
+        initOkHttpClient();
+        initRetrofit();
+        if (apiService == null){
+            apiService = retrofit.create(ApiService.class);
+        }
     }
 
     private void initRetrofit() {
@@ -135,5 +137,4 @@ public class HttpClient {
         builder.connectionPool(new ConnectionPool(8, 15, TimeUnit.SECONDS));
         okHttpClient = builder.build();
     }
-
 }

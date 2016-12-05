@@ -13,16 +13,12 @@ import android.widget.TextView;
 
 import com.pfh.app_mvvm.R;
 import com.pfh.app_mvvm.model.Repository;
-import com.pfh.app_mvvm.network.ApiService;
-import com.pfh.app_mvvm.network.ExceptionHandle;
-import com.pfh.app_mvvm.network.HttpClient;
-import com.pfh.app_mvvm.network.HttpSubscriber;
+import com.pfh.app_mvvm.network.ApiClient;
 
 import java.util.List;
 
 import retrofit2.adapter.rxjava.HttpException;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import rx.Subscriber;
 
 /**
  * viewmodel 不持有任何控件，持有context，model
@@ -43,7 +39,7 @@ public class MainViewModel extends BaseViewModel {
     public String editTextUsernameValue;
 
     public MainViewModel(Context context, DataListener dataListener){
-        this.context = context;
+        this.mContext = context;
         this.dataListener = dataListener;
         infoMessageVisibility = new ObservableInt(View.VISIBLE);
         progressVisibility = new ObservableInt(View.INVISIBLE);
@@ -97,51 +93,38 @@ public class MainViewModel extends BaseViewModel {
         progressVisibility.set(View.VISIBLE);
         recyclerViewVisibility.set(View.INVISIBLE);
         infoMessageVisibility.set(View.INVISIBLE);
-        //如果先前一个未注销，则先注销 Todo ？ 每个都这么写一遍太麻烦。。
-        if (subscription != null && !subscription.isUnsubscribed()){
-            subscription.unsubscribe();
-        }
 
-//        MyApplication application = MyApplication.get(context);//todo 为什么要这一步？
-//        ApiService apiService = application.getApiService();
+//        //如果先前一个未注销，则先注销 Todo ？ 每个都这么写一遍太麻烦。。
+//        if (subscription != null && !subscription.isUnsubscribed()){
+//            subscription.unsubscribe();
+//        }
+        subscription = ApiClient.getInstance().publicRepositories(username, new Subscriber<List<Repository>>() {
+            @Override
+            public void onCompleted() {
+                if (dataListener != null) dataListener.onRepositoriesChanged(repositories);
+                progressVisibility.set(View.INVISIBLE);
+                if (!repositories.isEmpty()) {
+                    recyclerViewVisibility.set(View.VISIBLE);
+                } else {
+                    infoMessage.set(mContext.getString(R.string.text_empty_repos));
+                    infoMessageVisibility.set(View.VISIBLE);
+                }
+            }
 
-        ApiService apiService  = HttpClient.getInstance().getGithubService();
-        subscription = apiService.test(username)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new HttpSubscriber<List<Repository>>() {
-                    @Override
-                    public void onSuccess(List<Repository> repositories) {
-                        Log.i(TAG, "Repos loaded " + repositories);
-                        MainViewModel.this.repositories = repositories;
-                    }
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "Error loading GitHub repos "+ e.getMessage());
+                progressVisibility.set(View.INVISIBLE);
+                infoMessage.set(mContext.getString(R.string.error_username_not_found));
+                infoMessageVisibility.set(View.VISIBLE);
+            }
 
-                    @Override
-                    public void onFailure(ExceptionHandle.ResponeThrowable responeThrowable) {
-                        Log.e(TAG, "Error loading GitHub repos "+ responeThrowable.message);
-                        progressVisibility.set(View.INVISIBLE);
-                        if (responeThrowable.code == 404) {
-                            infoMessage.set(context.getString(R.string.error_username_not_found));
-                        } else {
-                            infoMessage.set(context.getString(R.string.error_loading_repos));
-                        }
-                        infoMessageVisibility.set(View.VISIBLE);
-
-                    }
-
-                    @Override
-                    public void onFinished() {
-                        if (dataListener != null) dataListener.onRepositoriesChanged(repositories);
-                        progressVisibility.set(View.INVISIBLE);
-                        if (!repositories.isEmpty()) {
-                            recyclerViewVisibility.set(View.VISIBLE);
-                        } else {
-                            infoMessage.set(context.getString(R.string.text_empty_repos));
-                            infoMessageVisibility.set(View.VISIBLE);
-                        }
-
-                    }
-                });
+            @Override
+            public void onNext(List<Repository> repositories) {
+                Log.e(TAG, "Repos loaded " + repositories);
+                MainViewModel.this.repositories = repositories;
+            }
+        });
 
     }
 

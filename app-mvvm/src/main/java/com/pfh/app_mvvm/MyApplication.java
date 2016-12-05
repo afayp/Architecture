@@ -37,7 +37,7 @@ public class MyApplication extends Application {
 
 //    public ApiService getApiService(){
 //        if (apiService == null){
-//            apiService = HttpClient.getGithubService();
+//            apiService = RetrofitClient.getApiService();
 //        }
 //        return apiService;
 //    }

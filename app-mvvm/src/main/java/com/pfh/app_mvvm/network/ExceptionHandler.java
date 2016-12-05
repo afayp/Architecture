@@ -15,7 +15,7 @@ import retrofit2.adapter.rxjava.HttpException;
  * 根据需求对不同错误可以统一处理
  */
 
-public class ExceptionHandle {
+public class ExceptionHandler {
 
     //对应HTTP的状态码
     private static final int UNAUTHORIZED = 401;

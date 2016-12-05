@@ -11,13 +11,10 @@ import android.widget.ImageView;
 import com.pfh.app_mvvm.R;
 import com.pfh.app_mvvm.model.Repository;
 import com.pfh.app_mvvm.model.User;
-import com.pfh.app_mvvm.network.ApiService;
-import com.pfh.app_mvvm.network.HttpClient;
+import com.pfh.app_mvvm.network.ApiClient;
 import com.squareup.picasso.Picasso;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import rx.Subscriber;
 
 /**
  * Created by Administrator on 2016/12/3.
@@ -38,7 +35,7 @@ public class RepositoryViewModel extends BaseViewModel {
 
     public RepositoryViewModel(Context context, final Repository repository) {
         this.repository = repository;
-        this.context = context;
+        this.mContext = context;
         this.ownerName = new ObservableField<>();
         this.ownerEmail = new ObservableField<>();
         this.ownerLocation = new ObservableField<>();
@@ -67,7 +64,7 @@ public class RepositoryViewModel extends BaseViewModel {
     }
 
     public String getLanguage() {
-        return context.getString(R.string.text_language, repository.language);
+        return mContext.getString(R.string.text_language, repository.language);
     }
 
     public int getLanguageVisibility() {
@@ -92,24 +89,29 @@ public class RepositoryViewModel extends BaseViewModel {
     }
 
     private void loadFullUser(String url) {
-//        MyApplication application = MyApplication.get(context);
-//        ApiService apiService = application.getApiService();
 
-        ApiService apiService  = HttpClient.getInstance().getGithubService();
-        subscription = apiService.userFromUrl(url)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Action1<User>() {
-                    @Override
-                    public void call(User user) {
-                        Log.i(TAG, "Full user data loaded " + user);
-                        ownerName.set(user.name);
-                        ownerEmail.set(user.email);
-                        ownerLocation.set(user.location);
-                        ownerEmailVisibility.set(user.hasEmail() ? View.VISIBLE : View.GONE);
-                        ownerLocationVisibility.set(user.hasLocation() ? View.VISIBLE : View.GONE);
-                        ownerLayoutVisibility.set(View.VISIBLE);
-                    }
-                });
+        ApiClient.getInstance().userFromUrl(url, new Subscriber<User>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(User user) {
+                Log.i(TAG, "Full user data loaded " + user);
+                ownerName.set(user.name);
+                ownerEmail.set(user.email);
+                ownerLocation.set(user.location);
+                ownerEmailVisibility.set(user.hasEmail() ? View.VISIBLE : View.GONE);
+                ownerLocationVisibility.set(user.hasLocation() ? View.VISIBLE : View.GONE);
+                ownerLayoutVisibility.set(View.VISIBLE);
+            }
+        });
+
     }
 }
