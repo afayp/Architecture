@@ -1,7 +1,8 @@
-package com.pfh.app_mvvm.network;
+package com.pfh.app_mvp.network;
 
-import com.pfh.app_mvvm.model.Repository;
-import com.pfh.app_mvvm.model.User;
+
+import com.pfh.app_mvp.model.Repository;
+import com.pfh.app_mvp.model.User;
 
 import java.util.List;
 
@@ -23,8 +24,7 @@ public interface ApiService {
     @GET
     Observable<User> userFromUrl(@Url String userUrl);
 
-    // 如果对返回结果做过统一处理，可以采用这种方式
-    @GET("users/{username}/repos")
-    Observable<HttpResult<List<Repository>>> test(@Path("username") String username);
+//    @GET("users/{username}/repos")
+//    Observable<HttpResult<List<Repository>>> test(@Path("username") String username);
 
 }
