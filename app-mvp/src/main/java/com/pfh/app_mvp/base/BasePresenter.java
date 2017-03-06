@@ -1,5 +1,7 @@
 package com.pfh.app_mvp.base;
 
+import com.pfh.app_mvp.network.ApiClient;
+
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -15,7 +17,7 @@ public class BasePresenter<V> implements IPresenter<V> {
 
     public V mvpView;
     private CompositeSubscription mCompositeSubscription;
-
+    protected ApiClient apiClient = ApiClient.getInstance();
 
     @Override
     public void attachView(V view) {

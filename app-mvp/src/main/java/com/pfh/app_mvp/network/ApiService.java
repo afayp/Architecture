@@ -13,7 +13,7 @@ import rx.Observable;
 
 /**
  * 可以把所有api都放到一个接口下，如ApiStores
- * 可以按照功能划分，多些几个接口，如GithubService，XxxService,
+ * 也可以按照功能划分，多些几个接口，如GitHubService，XxxService,
  */
 
 public interface ApiService {
@@ -23,8 +23,5 @@ public interface ApiService {
 
     @GET
     Observable<User> userFromUrl(@Url String userUrl);
-
-//    @GET("users/{username}/repos")
-//    Observable<HttpResult<List<Repository>>> test(@Path("username") String username);
 
 }

@@ -6,9 +6,6 @@ import android.content.Context;
 import rx.Scheduler;
 import rx.schedulers.Schedulers;
 
-/**
- * Created by Administrator on 2016/12/3.
- */
 
 public class MyApplication extends Application {
 

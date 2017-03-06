@@ -1,5 +1,9 @@
 package com.pfh.app_mvp.repos;
 
+import com.pfh.app_mvp.model.Repository;
+
+import java.util.List;
+
 /**
  * 契约类,包括
  *  1. view(activity)与Presenter交互的接口，定义界面改变需要的方法
@@ -19,17 +23,21 @@ public interface ReposContract {
 
         void hideProgress();
 
-        void showLoadErrorMsg();
+        void showLoadErrorMsg(String errorInfo);
 
-        void showRepos();
+        void hideLoadErrorMsg();
+
+        void showRepos(List<Repository> repositories);
+
+        void hideRepos();
 
     }
 
     interface Presenter {
 
-        void loadRepos();
+        void loadRepos(String username);
 
-        void clickRepo();
+        void clickRepository();
 
     }
 

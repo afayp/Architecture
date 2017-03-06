@@ -43,6 +43,7 @@ dependencies {
     compile dependencies.picasso
     compile dependencies.rxAndroid
     compile dependencies.circleImageView
+    compile dependencies.butterknife
 
     testCompile dependencies.jUnit
     testCompile dependencies.mockito

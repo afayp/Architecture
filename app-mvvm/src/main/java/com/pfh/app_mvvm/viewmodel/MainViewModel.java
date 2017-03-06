@@ -98,7 +98,8 @@ public class MainViewModel extends BaseViewModel {
 //        if (subscription != null && !subscription.isUnsubscribed()){
 //            subscription.unsubscribe();
 //        }
-        subscription = ApiClient.getInstance().publicRepositories(username, new Subscriber<List<Repository>>() {
+
+        this.subscription = ApiClient.getInstance().publicRepositories(username, new Subscriber<List<Repository>>() {
             @Override
             public void onCompleted() {
                 if (dataListener != null) dataListener.onRepositoriesChanged(repositories);

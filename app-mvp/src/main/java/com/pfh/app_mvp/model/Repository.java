@@ -41,6 +41,82 @@ public class Repository implements Parcelable {
         return fork;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getForks() {
+        return forks;
+    }
+
+    public void setForks(int forks) {
+        this.forks = forks;
+    }
+
+    public int getWatchers() {
+        return watchers;
+    }
+
+    public void setWatchers(int watchers) {
+        this.watchers = watchers;
+    }
+
+    public int getStars() {
+        return stars;
+    }
+
+    public void setStars(int stars) {
+        this.stars = stars;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getHomepage() {
+        return homepage;
+    }
+
+    public void setHomepage(String homepage) {
+        this.homepage = homepage;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public void setFork(boolean fork) {
+        this.fork = fork;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -58,6 +134,22 @@ public class Repository implements Parcelable {
         dest.writeString(this.homepage);
         dest.writeParcelable(this.owner, 0);
         dest.writeByte(fork ? (byte) 1 : (byte) 0);
+    }
+
+    @Override
+    public String toString() {
+        return "Repository{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", forks=" + forks +
+                ", watchers=" + watchers +
+                ", stars=" + stars +
+                ", language='" + language + '\'' +
+                ", homepage='" + homepage + '\'' +
+                ", owner=" + owner +
+                ", fork=" + fork +
+                '}';
     }
 
     protected Repository(Parcel in) {
