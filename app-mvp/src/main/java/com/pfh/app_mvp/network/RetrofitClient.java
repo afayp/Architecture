@@ -36,7 +36,7 @@ public class RetrofitClient {
     protected ApiService apiService;
     private static Retrofit retrofit;
     private static OkHttpClient okHttpClient;
-    private static Context mContext; // 防止内存泄露，用了application的context，不知道合不合适？ 还是使用WeakReference？
+    private static Context mContext;
 
     protected Observable.Transformer defaultSchedulers = new Observable.Transformer() {
         @Override

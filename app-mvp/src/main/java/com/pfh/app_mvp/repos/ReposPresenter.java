@@ -1,7 +1,4 @@
 package com.pfh.app_mvp.repos;
-
-import android.support.annotation.NonNull;
-
 import com.pfh.app_mvp.base.BasePresenter;
 import com.pfh.app_mvp.model.Repository;
 
@@ -9,13 +6,10 @@ import java.util.List;
 
 import rx.Subscriber;
 
-/**
- * Created by afayp on 2017/3/6.
- */
 
 public class ReposPresenter extends BasePresenter<ReposContract.View> implements ReposContract.Presenter  {
 
-    public ReposPresenter(@NonNull ReposContract.View tasksView) {
+    public ReposPresenter(ReposContract.View tasksView) {
         attachView(tasksView);
     }
 

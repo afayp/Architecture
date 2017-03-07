@@ -3,9 +3,7 @@ package com.pfh.app_mvp.network;
 
 import com.pfh.app_mvp.model.Repository;
 import com.pfh.app_mvp.model.User;
-
 import java.util.List;
-
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Url;

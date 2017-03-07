@@ -16,9 +16,7 @@ import com.pfh.app_mvp.R;
 import com.pfh.app_mvp.adapter.RepositoryAdapter;
 import com.pfh.app_mvp.base.BaseActivity;
 import com.pfh.app_mvp.model.Repository;
-
 import java.util.List;
-
 import butterknife.Bind;
 
 /**

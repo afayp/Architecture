@@ -8,10 +8,6 @@ import com.pfh.app_mvvm.utils.NetUtil;
 
 import rx.Subscriber;
 
-/**
- * Created by Administrator on 2016/12/4.
- */
-
 public abstract class HttpSubscriber<T> extends Subscriber<HttpResult<T>> {
 
     private boolean isShowProgressDialog = true;//是否显示加载框,默认显示
