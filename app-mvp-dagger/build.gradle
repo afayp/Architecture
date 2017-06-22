@@ -1,12 +1,13 @@
 apply plugin: 'com.android.application'
 
+
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion "25.0.3"
 
     defaultConfig {
-        applicationId "com.pfh.app_mvp"
-        minSdkVersion 14
+        applicationId "com.example.mvpdagger"
+        minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -28,24 +29,24 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
+
+    compile 'com.google.dagger:dagger:2.6'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.6'
 
     Map<java.lang.String,java.lang.String> dependencies = rootProject.ext.dependencies;
 
-    compile dependencies.appCompat
-    compile dependencies.cardView
     compile dependencies.recyclerView
+    compile dependencies.cardView
     compile dependencies.retrofit
     compile dependencies.retrofitConverterGson
     compile dependencies.retrofitAdapterRxJava
     compile dependencies.okhttp
     compile dependencies.okhttpLoggingInterceptor
-    compile dependencies.picasso
     compile dependencies.rxAndroid
-    compile dependencies.circleImageView
+    compile dependencies.rxJava
+
     compile dependencies.butterknife
 
-    testCompile dependencies.jUnit
-    testCompile dependencies.mockito
-    testCompile dependencies.robolectric
 }

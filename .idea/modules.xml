@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/Architecture.iml" filepath="$PROJECT_DIR$/Architecture.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app-mvp/app-mvp.iml" filepath="$PROJECT_DIR$/app-mvp/app-mvp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app-mvp-dagger/app-mvp-dagger.iml" filepath="$PROJECT_DIR$/app-mvp-dagger/app-mvp-dagger.iml" />
       <module fileurl="file://$PROJECT_DIR$/app-mvvm/app-mvvm.iml" filepath="$PROJECT_DIR$/app-mvvm/app-mvvm.iml" />
     </modules>
   </component>
